@@ -14,9 +14,10 @@ def show_circular_adj_graph(adj_df, center=None, show_plot=False):
     fig.tight_layout()
     
     # Convert to numpy matrix
-    mat = df.to_numpy()
+    mat = adj_df.to_numpy()
     rows, cols = np.where(~np.isnan(mat))
     
+    # Plot circles
     circle_factor = 2
     Rlvl = np.array([3, 2, 1])*circle_factor
     for R in Rlvl:
@@ -48,12 +49,12 @@ def show_circular_adj_graph(adj_df, center=None, show_plot=False):
             
             t = 2*np.pi*i/N
             npos[k] = (R*np.sin(t), R*np.cos(t))
-            print("Added position: " + str(npos[k]))
+            # print("Added position: " + str(npos[k]))
             i += 1
     
 
-    print(rows)
-    print(cols)
+    # print(rows)
+    # print(cols)
     edges = zip(rows.tolist(), cols.tolist())
     
     gr = nx.Graph()
