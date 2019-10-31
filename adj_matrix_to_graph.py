@@ -20,9 +20,20 @@ def show_circular_adj_graph(adj_df, center=None, show_plot=False):
     # Plot circles
     circle_factor = 2
     Rlvl = np.array([3, 2, 1])*circle_factor
-    for R in Rlvl:
-        c = plt.Circle((0,0), R-0.5*circle_factor, color='k', fill=False)
-        ax.add_artist(c)
+    Rcircles = Rlvl + 0.5 * circle_factor
+    for R in Rcircles:
+        cf = plt.Circle((0,0), R, color='#ffff00', alpha=0.3, fill=True, zorder=0)
+        cb = plt.Circle((0,0), R, fill=False, edgecolor='k', zorder=0)
+        ax.add_artist(cf)
+        ax.add_artist(cb)
+        
+    # Label cirles
+    labels = ['Weniger wichtige Personen', 'Wichtige Personen', 'Sehr wichtige Personen']
+    Rlabels = Rlvl + 0.3 * circle_factor
+    boxprops = dict(boxstyle='round', facecolor='white')
+    for R, label  in zip(Rlabels, labels):
+        plt.text(0, R, label, fontsize=6, horizontalalignment='center', bbox=boxprops)
+        
 
     # Extract names and convert to dict
     names = list(df.columns)
@@ -32,6 +43,10 @@ def show_circular_adj_graph(adj_df, center=None, show_plot=False):
     for k,v in nlabels.items():
         if v == center:
             ind_center = k
+    
+    # Make center node bigger
+    nsize = [100] * len(names)
+    nsize[ind_center] = 500
     
     # Calculate node positions
     npos = dict()
@@ -64,9 +79,9 @@ def show_circular_adj_graph(adj_df, center=None, show_plot=False):
     colors = [gr[u][v]['color'] for u,v in edges]
     weigths = [gr[u][v]['weight'] for u,v in edges]
      
-    nx.draw(gr, node_size=200, pos=npos, labels=nlabels, edge_color=colors, width=weigths, with_labels=True)
-    plt.xlim(-7, 7)
-    plt.ylim(-7, 7)
+    nx.draw(gr, node_size=nsize, pos=npos, labels=nlabels, edge_color=colors, width=weigths, with_labels=True, fontsize=10)
+    plt.xlim(-8, 8)
+    plt.ylim(-8, 8)
     plt.gca().set_aspect('equal', adjustable='box')
     
     if show_plot:
