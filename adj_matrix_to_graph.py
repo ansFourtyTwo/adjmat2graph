@@ -89,8 +89,8 @@ def show_circular_adj_graph(adj_df, center=None, show_plot=False):
         
     # Save figure
     pre, ext = os.path.splitext(xlsxfile)
-    pngfile = pre + '_' + center + '.pdf'
-    plt.savefig(pngfile, bbox_inches='tight')
+    imfile = pre + '_' + center + '.pdf'
+    plt.savefig(imfile, bbox_inches='tight')
 
     
     
