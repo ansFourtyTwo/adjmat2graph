@@ -24,17 +24,16 @@ def show_circular_adj_graph(adj_df, center=None, show_plot=False):
         c = plt.Circle((0,0), R-0.5*circle_factor, color='k', fill=False)
         ax.add_artist(c)
 
-
-
     # Extract names and convert to dict
     names = list(df.columns)
     nlabels = {k: v for k, v in enumerate(names)} 
 
-    # Calc node positions
+    # Get center index
     for k,v in nlabels.items():
         if v == center:
             ind_center = k
     
+    # Calculate node positions
     npos = dict()
     N = len(nlabels)-1
     i = 0
@@ -49,14 +48,10 @@ def show_circular_adj_graph(adj_df, center=None, show_plot=False):
             
             t = 2*np.pi*i/N
             npos[k] = (R*np.sin(t), R*np.cos(t))
-            # print("Added position: " + str(npos[k]))
             i += 1
     
-
-    # print(rows)
-    # print(cols)
-    edges = zip(rows.tolist(), cols.tolist())
-    
+    # Generate edges and graph
+    edges = zip(rows.tolist(), cols.tolist()) 
     gr = nx.Graph()
     for edge in edges:
         u,v = edge
